@@ -19,31 +19,35 @@ class PlayingAudioController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        audioPlayer = try! AVAudioPlayer(contentsOfURL: receivedAudio.url)
+        let session = AVAudioSession.sharedInstance()
+        try! session.setCategory(AVAudioSessionCategoryPlayback)
+        
+        audioPlayer = try! AVAudioPlayer(contentsOfURL: receivedAudio.filePathURL)
         audioPlayer.enableRate = true
+        audioPlayer.volume = 1.0
         
         audioEngine = AVAudioEngine()
-        audioFile = try! AVAudioFile(forReading: receivedAudio.url)
+        audioFile = try! AVAudioFile(forReading: receivedAudio.filePathURL)
     }
     
     @IBAction func playSlowAudio(sender: UIButton) {
-        audioPlayer.stop()
-        audioPlayer.rate = 0.8;
+        self.stopAudio()
+        
+        audioPlayer.rate = 0.5;
         audioPlayer.currentTime = 0;
         audioPlayer.play()
     }
     
     @IBAction func playFastAudio(sender: UIButton) {
-        audioPlayer.stop()
+        self.stopAudio()
+        
         audioPlayer.rate = 1.5;
         audioPlayer.currentTime = 0;
         audioPlayer.play()
     }
     
     @IBAction func playChipmunkAudio(sender: UIButton) {
-        audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
+        self.stopAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -56,14 +60,13 @@ class PlayingAudioController: UIViewController {
         audioEngine.connect(changePitchEffect, to: audioEngine.outputNode, format: nil)
         
         audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        try! audioEngine.start()
         
         audioPlayerNode.play()
     }
     
     @IBAction func playDarthVaderAudio(sender: UIButton) {
-        audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
+        self.stopAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -76,9 +79,61 @@ class PlayingAudioController: UIViewController {
         audioEngine.connect(changePitchEffect, to: audioEngine.outputNode, format: nil)
         
         audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        try! audioEngine.start()
         
         audioPlayerNode.play()
     }
     
+    @IBAction func playEchoAudio(sender: UIButton) {
+        self.stopAudio()
+        
+        let audioPlayerNode = AVAudioPlayerNode()
+        audioEngine.attachNode(audioPlayerNode)
+        
+        let echoNode = AVAudioUnitDelay()
+        echoNode.delayTime = NSTimeInterval(0.3)
+        
+        audioEngine.attachNode(echoNode)
+        
+        audioEngine.connect(audioPlayerNode, to: echoNode, format: nil)
+        audioEngine.connect(echoNode, to: audioEngine.outputNode, format: nil)
+        
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        try! audioEngine.start()
+        
+        audioPlayerNode.play()
+    }
+    
+    @IBAction func playReverbAudio(sender: UIButton) {
+        self.stopAudio()
+        
+        let audioPlayerNode = AVAudioPlayerNode()
+        audioEngine.attachNode(audioPlayerNode)
+        
+        let reverbNode = AVAudioUnitReverb()
+        reverbNode.loadFactoryPreset( AVAudioUnitReverbPreset.Cathedral)
+        reverbNode.wetDryMix = 60
+        
+        audioEngine.attachNode(reverbNode)
+        
+        audioEngine.connect(audioPlayerNode, to: reverbNode, format: nil)
+        audioEngine.connect(reverbNode, to: audioEngine.outputNode, format: nil)
+        
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        try! audioEngine.start()
+        
+        audioPlayerNode.play()
+
+    }
+    
+    @IBAction func stopAudio(sender: UIButton) {
+        self.stopAudio()
+    }
+    
+    func stopAudio() {
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+    }
 
 }

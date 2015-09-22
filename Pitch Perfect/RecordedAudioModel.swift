@@ -10,11 +10,11 @@ import Foundation
 
 class RecordedAudioModel {
     
-    var url:NSURL!
-    var lastComponent:String!
+    var filePathURL:NSURL!
+    var title:String!
     
     init(url:NSURL, lastComponent:String!) {
-        self.url = url
-        self.lastComponent = lastComponent
+        self.filePathURL = url
+        self.title = lastComponent
     }
 }

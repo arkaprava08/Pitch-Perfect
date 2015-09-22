@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A15DC2D1BB1B3F800640000 /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15DC2C1BB1B3F800640000 /* GlobalConstants.swift */; settings = {ASSET_TAGS = (); }; };
 		0A43CA9A1BAD466300D252DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43CA991BAD466300D252DE /* AppDelegate.swift */; };
 		0A43CA9C1BAD466300D252DE /* RecordingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43CA9B1BAD466300D252DE /* RecordingController.swift */; };
 		0A43CA9F1BAD466300D252DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A43CA9D1BAD466300D252DE /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A15DC2C1BB1B3F800640000 /* GlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		0A43CA961BAD466300D252DE /* Pitch Perfect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pitch Perfect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A43CA991BAD466300D252DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A43CA9B1BAD466300D252DE /* RecordingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingController.swift; sourceTree = "<group>"; };
@@ -104,11 +106,12 @@
 				0A43CA991BAD466300D252DE /* AppDelegate.swift */,
 				0A43CA9B1BAD466300D252DE /* RecordingController.swift */,
 				0A43CAC71BAD5C3C00D252DE /* PlayingAudioController.swift */,
+				0A43CAC91BAD7D3F00D252DE /* RecordedAudioModel.swift */,
 				0A43CA9D1BAD466300D252DE /* Main.storyboard */,
 				0A43CAA01BAD466300D252DE /* Assets.xcassets */,
 				0A43CAA21BAD466300D252DE /* LaunchScreen.storyboard */,
 				0A43CAA51BAD466300D252DE /* Info.plist */,
-				0A43CAC91BAD7D3F00D252DE /* RecordedAudioModel.swift */,
+				0A15DC2C1BB1B3F800640000 /* GlobalConstants.swift */,
 			);
 			path = "Pitch Perfect";
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 			files = (
 				0A43CA9C1BAD466300D252DE /* RecordingController.swift in Sources */,
 				0A43CA9A1BAD466300D252DE /* AppDelegate.swift in Sources */,
+				0A15DC2D1BB1B3F800640000 /* GlobalConstants.swift in Sources */,
 				0A43CACA1BAD7D3F00D252DE /* RecordedAudioModel.swift in Sources */,
 				0A43CAC81BAD5C3C00D252DE /* PlayingAudioController.swift in Sources */,
 			);

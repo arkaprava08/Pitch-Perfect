@@ -18,21 +18,16 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-    var isPaused:Bool!
     
-    struct GlobalConstants {
-        static let afterRecordingStarts = "Recording..."
-        static let beforeRecordingStarts = "Tap to start recording";
-        static let recordingPermissionFailed = "Failed to fetch recording permission"
-        static let audioRecordingPaused = "Recording paused !"
-        static let audioRecordingResumed = "Recording continues..."
-    }
+    //flag to keep check on whether audio is paused or resumed
+    var isPaused:Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        isPaused = false
         
+        //set isPaused to false at first
+        isPaused = false
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -45,9 +40,8 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         if(segue.identifier == "playAudioSegue") {
-            print("pass data")
-            
             let playSoundsVC:PlayingAudioController = segue.destinationViewController as! PlayingAudioController
             let data = sender as! RecordedAudioModel
             playSoundsVC.receivedAudio = data
@@ -56,9 +50,6 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         
-        print("did finish recording")
-        
-        print(recorder.url);
         let recordedAudio = RecordedAudioModel(url: recorder.url, lastComponent: recorder.url.lastPathComponent)
         
         //Performing Segue
@@ -67,6 +58,7 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
 
     //to record audio when record button is clicked
     @IBAction func recordAudio(sender: UIButton) {
+        
         alertLabel.text = GlobalConstants.afterRecordingStarts
         recorderButton.enabled = false
         
@@ -77,7 +69,7 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
         //record audio
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
         
-        let recordingName = "sample.wav"
+        let recordingName = GlobalConstants.fileName
         let pathArray = [dirPath, recordingName]
         let filePath = NSURL.fileURLWithPathComponents(pathArray)
         
@@ -88,14 +80,9 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.delegate = self
         audioRecorder.meteringEnabled = true
         audioRecorder.record()
-        
-        
-        print("still recording")
     }
     
     @IBAction func stopRecordingAudio(sender: UIButton) {
-        print("stop")
-        
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
         try! audioSession.setActive(false)
@@ -103,6 +90,7 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     
     @IBAction func resumePauseAudio(sender: UIButton) {
         
+        //logic based on whether the recording is paused or resumed
         if(isPaused!) {
             isPaused = false;
             let image = UIImage(named: "PauseIcon")
