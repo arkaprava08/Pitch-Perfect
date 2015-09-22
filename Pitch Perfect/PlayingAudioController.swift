@@ -30,24 +30,24 @@ class PlayingAudioController: UIViewController {
         audioFile = try! AVAudioFile(forReading: receivedAudio.filePathURL)
     }
     
-    @IBAction func playSlowAudio(sender: UIButton) {
-        self.stopAudio()
+    func playAudioAtGivenRate(rate:Float) {
+        stopAudio()
         
-        audioPlayer.rate = 0.5;
+        audioPlayer.rate = rate;
         audioPlayer.currentTime = 0;
         audioPlayer.play()
+    }
+    
+    @IBAction func playSlowAudio(sender: UIButton) {
+        playAudioAtGivenRate(0.5)
     }
     
     @IBAction func playFastAudio(sender: UIButton) {
-        self.stopAudio()
-        
-        audioPlayer.rate = 1.5;
-        audioPlayer.currentTime = 0;
-        audioPlayer.play()
+        playAudioAtGivenRate(1.5)
     }
     
     @IBAction func playChipmunkAudio(sender: UIButton) {
-        self.stopAudio()
+        stopAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -66,7 +66,7 @@ class PlayingAudioController: UIViewController {
     }
     
     @IBAction func playDarthVaderAudio(sender: UIButton) {
-        self.stopAudio()
+        stopAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -85,7 +85,7 @@ class PlayingAudioController: UIViewController {
     }
     
     @IBAction func playEchoAudio(sender: UIButton) {
-        self.stopAudio()
+        stopAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -105,7 +105,7 @@ class PlayingAudioController: UIViewController {
     }
     
     @IBAction func playReverbAudio(sender: UIButton) {
-        self.stopAudio()
+        stopAudio()
         
         let audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attachNode(audioPlayerNode)
@@ -127,7 +127,7 @@ class PlayingAudioController: UIViewController {
     }
     
     @IBAction func stopAudio(sender: UIButton) {
-        self.stopAudio()
+        stopAudio()
     }
     
     func stopAudio() {

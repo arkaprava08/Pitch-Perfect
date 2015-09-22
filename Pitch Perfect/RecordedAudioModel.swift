@@ -14,7 +14,7 @@ class RecordedAudioModel {
     var title:String!
     
     init(url:NSURL, lastComponent:String!) {
-        self.filePathURL = url
-        self.title = lastComponent
+        filePathURL = url
+        title = lastComponent
     }
 }

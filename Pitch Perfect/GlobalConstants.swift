@@ -15,4 +15,6 @@ struct GlobalConstants {
     static let audioRecordingPaused = "Recording paused !"
     static let audioRecordingResumed = "Recording continues..."
     static let fileName = "sample.wav"
+    static let errorRecording = "Audio could not be recorded !"
+    static let microphoneError = "Microphone couldnot be started !"
 }

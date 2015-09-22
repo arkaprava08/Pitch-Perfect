@@ -28,6 +28,27 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
         
         //set isPaused to false at first
         isPaused = false
+        
+        //configuration for recording audio done once
+        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+        
+        let recordingName = GlobalConstants.fileName
+        let pathArray = [dirPath, recordingName]
+        let filePath = NSURL.fileURLWithPathComponents(pathArray)
+        
+        let session = AVAudioSession.sharedInstance()
+        
+        do {
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try session.setActive(true)
+            
+            audioRecorder = try AVAudioRecorder(URL: filePath!, settings: [:])
+            audioRecorder.delegate = self
+            audioRecorder.meteringEnabled = true
+            
+        } catch {
+            alertLabel.text = GlobalConstants.microphoneError
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -50,10 +71,14 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         
-        let recordedAudio = RecordedAudioModel(url: recorder.url, lastComponent: recorder.url.lastPathComponent)
-        
-        //Performing Segue
-        self.performSegueWithIdentifier("playAudioSegue", sender: recordedAudio);
+        if flag {
+            let recordedAudio = RecordedAudioModel(url: recorder.url, lastComponent: recorder.url.lastPathComponent)
+            
+            //Performing Segue
+            performSegueWithIdentifier("playAudioSegue", sender: recordedAudio);
+        } else {
+            alertLabel.text = GlobalConstants.errorRecording
+        }
     }
 
     //to record audio when record button is clicked
@@ -66,19 +91,6 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
         resumePauseButton.hidden = false
         stopButton.hidden = false
         
-        //record audio
-        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        
-        let recordingName = GlobalConstants.fileName
-        let pathArray = [dirPath, recordingName]
-        let filePath = NSURL.fileURLWithPathComponents(pathArray)
-        
-        let session = AVAudioSession.sharedInstance()
-        try! session.setCategory(AVAudioSessionCategoryPlayAndRecord)
-        
-        audioRecorder = try? AVAudioRecorder(URL: filePath!, settings: [:])
-        audioRecorder.delegate = self
-        audioRecorder.meteringEnabled = true
         audioRecorder.record()
     }
     
@@ -106,10 +118,6 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
             alertLabel.text = GlobalConstants.audioRecordingPaused
             audioRecorder.pause()
         }
-        
-        
     }
-    
-
 }
 
