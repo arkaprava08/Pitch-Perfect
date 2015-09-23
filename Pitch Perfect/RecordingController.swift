@@ -20,14 +20,11 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder!
     
     //flag to keep check on whether audio is paused or resumed
-    var isPaused:Bool!
+    var isPaused = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        //set isPaused to false at first
-        isPaused = false
         
         //configuration for recording audio done once
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
@@ -52,6 +49,8 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
         //setting resume, pause and stop button to hidden
         resumePauseButton.hidden = true
         stopButton.hidden = true
@@ -103,7 +102,7 @@ class RecordingController: UIViewController, AVAudioRecorderDelegate {
     @IBAction func resumePauseAudio(sender: UIButton) {
         
         //logic based on whether the recording is paused or resumed
-        if(isPaused!) {
+        if(isPaused) {
             isPaused = false;
             let image = UIImage(named: "PauseIcon")
             resumePauseButton.setImage(image, forState: UIControlState.Normal)
